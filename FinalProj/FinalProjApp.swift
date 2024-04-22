@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct FinalProjApp: App {
+struct PennDiningScavengerHuntApp: App {
+    @StateObject var viewmodel = ExerciseViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ExerciseView()
+                .environmentObject(viewmodel)
         }
     }
 }
