@@ -14,9 +14,9 @@ struct ExerciseView: View {
     @State private var showPermissionDeniedAlert = false
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack {
-                Text("Log New Workout")
+                Text("Let's Get Started!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding()

@@ -11,6 +11,8 @@ struct EmotionScreener: View {
     // int holding severity
     @State private var selectedEmotionIndex: Int = 0
     
+    @StateObject var viewmodelEmotions = EmotionViewModel()
+    
     // array to hold emotion objects
     @State private var emotions: [Emotion] = [
         // by default, set severity to 0 and reflction to empty string
@@ -59,17 +61,30 @@ struct EmotionScreener: View {
                     .accentColor(.blue)
                 }
                 
-                    // reflection journal
-                    Section(header: Text("Written Reflection")) {
-                        TextField(
-                            "Why do you feel that way?",
-                            text: $emotions[selectedEmotionIndex].reflection
-                            // in the emotions array, access the emotion using its index, then set its reflection value
-                        ).textFieldStyle(RoundedBorderTextFieldStyle())
-                            .disableAutocorrection(true).frame(height: 50).padding(.vertical, 10)
-                        // expand length of review box
+                // reflection journal
+                Section(header: Text("Written Reflection")) {
+                    TextField(
+                        "Why do you feel that way?",
+                        text: $emotions[selectedEmotionIndex].reflection
+                        // in the emotions array, access the emotion using its index, then set its reflection value
+                    ).textFieldStyle(RoundedBorderTextFieldStyle())
+                        .disableAutocorrection(true).frame(height: 50).padding(.vertical, 10)
+                    // expand length of review box
+                }
+                
+                
+                // also need to store the emotion object in core data here
+                // once completed with emotion reflection, move to cooldown view
+                NavigationLink(destination: CooldownView()) {
+                    Text("Continue").onTapGesture {
+                        // save the current emotion as the currently selected emotion object
+                        let currentEmotion = emotions[selectedEmotionIndex]
+                        // provide the currently selected emotion to the saveEmotion function in the view model, to save it to core data and view model's emotions array 
+                        viewmodelEmotions.saveEmotion(emotion: currentEmotion)
                     }
                 }
+            } 
+            
             }.navigationTitle("Emotions")
         }
     }
